@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E‑Learning Tasks</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f1f5f9; padding-bottom: 70px; }
+    .page { display: none; padding: 20px; }
+    .active { display: block; }
+    .card { background: #fff; padding: 20px; border-radius: 14px; max-width: 650px; margin: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+    .logo { text-align: center; font-size: 28px; font-weight: bold; color: #2563eb; margin-bottom: 10px; }
+    .subtitle { text-align: center; color: #64748b; margin-bottom: 20px; }
+    input { width: 100%; padding: 10px; margin: 8px 0; border-radius: 8px; border: 1px solid #cbd5e1; }
+    .btn { background: #2563eb; color: #fff; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px; }
+    .btn:hover { background: #1d4ed8; }
+    .danger { background: #dc2626; }
+    .success { color: #16a34a; font-weight: bold; }
+    .locked { color: #dc2626; font-weight: bold; }/* Bottom Navigation */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #0f172a; display: flex; justify-content: space-around; padding: 10px 0; }
+.bottom-nav button { background: none; border: none; color: #fff; font-size: 14px; cursor: pointer; }
+
+  </style>
+</head>
+<body><!-- DASHBOARD --><div id="dashboard" class="page active">
+  <div class="card">
+    <div class="logo">E‑Learning Tasks</div>
+    <div class="subtitle">Earn by completing simple surveys</div><p><strong>Name:</strong> <span id="displayName">Not registered</span></p>
+<p><strong>Status:</strong> <span id="status" class="locked">Inactive</span></p>
+<p><strong>Total Earnings:</strong> KES <span id="earnings">0</span></p>
+
+  </div>
+</div><!-- SURVEY --><div id="survey" class="page">
+  <div class="card">
+    <h2>Available Survey</h2>
+    <p><strong>Reward:</strong> KES 150 per completed survey</p><p id="surveyLock" class="locked">Pay KES 300 to unlock surveys.</p>
+
+<iframe id="googleForm" src="https://forms.gle/LJCYkuKxToum2x94A" width="100%" height="600" frameborder="0" style="display:none;"></iframe>
+
+  </div>
+</div><!-- PAYMENT --><div id="payment" class="page">
+  <div class="card">
+    <h2>Account Activation & Withdrawals</h2><label>Full Name</label>
+<input type="text" id="name" placeholder="Enter your full name" />
+
+<p><strong>Joining Fee:</strong> KES 300</p>
+<p><strong>Paybill:</strong> 22872644</p>
+<p><strong>Account Name:</strong> <em>(use the same name you entered above)</em></p>
+<p class="subtitle">After payment, send screenshot for confirmation</p>
+
+<button class="btn" onclick="activateAccount()">I Have Paid – Activate Account</button>
+
+<hr style="margin:20px 0;">
+
+<h3>Withdraw Earnings</h3>
+<p>Your Balance: KES <span id="withdrawBalance">0</span></p>
+<p id="withdrawNote" class="locked">Minimum withdrawal is KES 1,500</p>
+
+<button class="btn danger" onclick="withdraw()">Request Withdrawal</button>
+
+  </div>
+</div><!-- BOTTOM NAVIGATION --><div class="bottom-nav">
+  <button onclick="showPage('dashboard')">Dashboard</button>
+  <button onclick="showPage('survey')">Survey</button>
+  <button onclick="showPage('payment')">Payment</button>
+</div><script>
+  let activated = false;
+  let earnings = 0;
+
+  function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+  }
+
+  function activateAccount() {
+    const name = document.getElementById('name').value;
+    if (!name) {
+      alert('Please enter your name');
+      return;
+    }
+
+    activated = true;
+    earnings = 150; // sample initial earning
+
+    document.getElementById('displayName').textContent = name;
+    document.getElementById('status').textContent = 'Active';
+    document.getElementById('status').classList.remove('locked');
+    document.getElementById('status').classList.add('success');
+
+    document.getElementById('earnings').textContent = earnings;
+    document.getElementById('withdrawBalance').textContent = earnings;
+
+    document.getElementById('surveyLock').style.display = 'none';
+    document.getElementById('googleForm').style.display = 'block';
+
+    alert('Payment received. Account activated after confirmation.');
+    showPage('dashboard');
+  }
+
+  function withdraw() {
+    if (earnings < 1500) {
+      alert('Withdrawal available only when earnings reach KES 1,500');
+      return;
+    }
+    alert('Withdrawal request sent. You will be contacted shortly.');
+  }
+</script></body>
+</html>
